@@ -36,3 +36,13 @@ Route::prefix('admin')->group(function () {
         return view('admin.home');
     })->name('admin.home');
 });
+
+Route::prefix('admin')->group(function () {
+    Route::get('', function () {
+        return view('admin.home');
+    })->name('admin.home');
+
+    Route::get('blank', function () {
+        return view('admin.blank');
+    })->name('admin.blank');
+});
