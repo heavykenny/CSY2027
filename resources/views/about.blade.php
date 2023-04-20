@@ -1,5 +1,7 @@
 @extends("blank")
 
+@section('title', 'About Us')
+
 @section("content")
     <section class="bg-success py-5">
         <div class="container">

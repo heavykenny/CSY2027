@@ -1,5 +1,7 @@
 @extends("blank")
 
+@section('title', $product->name)
+
 @section("content")
 
     <!-- Open Content -->

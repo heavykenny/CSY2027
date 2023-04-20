@@ -1,5 +1,7 @@
 @extends('admin.layouts.admin')
 
+@section('title', 'Edit Product')
+
 @section('content')
     <!-- partial -->
     <div class="main-panel">

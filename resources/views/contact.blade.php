@@ -1,5 +1,7 @@
 @extends("blank")
 
+@section('title', 'Contact Us')
+
 @section("content")
 <!-- Start Content Page -->
 <div class="container-fluid bg-light py-5">

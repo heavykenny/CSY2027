@@ -1,5 +1,7 @@
 @extends("blank")
 
+@section('title', 'Home')
+
 @section("content")
     <!-- Start Banner Hero -->
     <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">

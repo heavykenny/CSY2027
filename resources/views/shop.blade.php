@@ -1,5 +1,7 @@
 @extends("blank")
 
+@section('title', 'Shop')
+
 @section("content")
     <!-- Start Content -->
     <div class="container py-5">

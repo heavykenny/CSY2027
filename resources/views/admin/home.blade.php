@@ -1,7 +1,8 @@
 @extends('admin.layouts.admin')
 
-@section('content')
+@section('title', 'Home')
 
+@section('content')
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">

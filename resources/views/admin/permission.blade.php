@@ -1,5 +1,7 @@
 @extends('admin.layouts.admin')
 
+@section('title', 'Permission')
+
 @section('content')
     <!-- partial -->
     <div class="main-panel">
