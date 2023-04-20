@@ -1,29 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends("blank")
 
-<head>
-    <title>eShop - Contact Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    @include("layouts.header")
-</head>
-
-<body>
-<!-- Start Top Nav -->
-@include("layouts.top-nav")
-<!-- Close Top Nav -->
-
-
-<!-- Header -->
-@include("layouts.header-nav")
-<!-- Close Header -->
-
-<!-- Modal -->
-@include("layouts.modal")
-<!-- Close Modal -->
-
-<!-- Start Content -->
+@section("content")
 <!-- Start Content Page -->
 <div class="container-fluid bg-light py-5">
     <div class="col-md-6 m-auto text-center">
@@ -65,15 +42,4 @@
         </form>
     </div>
 </div>
-<!-- End Contact -->
-
-<!-- Start Footer -->
-@include("layouts.footer")
-<!-- End Footer -->
-
-<!-- Start Script -->
-@include("layouts.script")
-<!-- End Script -->
-</body>
-
-</html>
+@endsection

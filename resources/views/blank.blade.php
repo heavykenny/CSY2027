@@ -24,8 +24,7 @@
 <!-- Close Modal -->
 
 <!-- Start Content -->
-
-
+@yield("content")
 <!-- Start Footer -->
 @include("layouts.footer")
 <!-- End Footer -->

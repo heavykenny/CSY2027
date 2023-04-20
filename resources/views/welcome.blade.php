@@ -155,81 +155,12 @@
                 </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 col-md-4 mb-4">
-                <div class="card h-100">
-                    <a href="shop-single.html">
-                        <img src="{{ asset("img/feature_prod_01.jpg")}}" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <ul class="list-unstyled d-flex justify-content-between">
-                            <li>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                            </li>
-                            <li class="text-muted text-right">$240.00</li>
-                        </ul>
-                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">Gym Weight</a>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia
-                            deserunt.
-                        </p>
-                        <p class="text-muted">Reviews (24)</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4 mb-4">
-                <div class="card h-100">
-                    <a href="shop-single.html">
-                        <img src="{{ asset("img/feature_prod_02.jpg")}}" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <ul class="list-unstyled d-flex justify-content-between">
-                            <li>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                            </li>
-                            <li class="text-muted text-right">$480.00</li>
-                        </ul>
-                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">Cloud Nike Shoes</a>
-                        <p class="card-text">
-                            Aenean gravida dignissim finibus. Nullam ipsum diam, posuere vitae pharetra sed, commodo
-                            ullamcorper.
-                        </p>
-                        <p class="text-muted">Reviews (48)</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4 mb-4">
-                <div class="card h-100">
-                    <a href="shop-single.html">
-                        <img src="{{ asset("img/feature_prod_03.jpg")}}" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <ul class="list-unstyled d-flex justify-content-between">
-                            <li>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                            </li>
-                            <li class="text-muted text-right">$360.00</li>
-                        </ul>
-                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">Summer Addides Shoes</a>
-                        <p class="card-text">
-                            Curabitur ac mi sit amet diam luctus porta. Phasellus pulvinar sagittis diam, et scelerisque
-                            ipsum lobortis nec.
-                        </p>
-                        <p class="text-muted">Reviews (74)</p>
-                    </div>
-                </div>
+        <div class="row" id="productsRow">
+            @include('layouts.partial.product', ['products' => $products])
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <button id="viewAllBtn" class="btn-lg btn-success" data-url="{{ route('products.loadMore') }}" data-page="{{ $products->currentPage() + 1 }}">View More Products</button>
             </div>
         </div>
     </div>
@@ -243,6 +174,33 @@
 
 <!-- Start Script -->
 @include("layouts.script")
+
+<script !src="">
+    $(document).ready(function () {
+        const productUrl = '{{ route('products.loadMore') }}';
+        $('#viewAllBtn').on('click', function () {
+            let button = $(this);
+
+            button.addClass('disabled').text('Loading...');
+
+            $.ajax({
+                url: productUrl,
+                data: {page: button.data('page')},
+                success: function (data) {
+                    $('#productsRow').append(data.html);
+
+                    if (data.nextPage) {
+                        button.removeClass('disabled').text('View More Products');
+                        button.data('page', button.data('page')+1);
+                    } else {
+                        button.remove();
+                    }
+                }
+            });
+        });
+    });
+
+</script>
 <!-- End Script -->
 </body>
 
