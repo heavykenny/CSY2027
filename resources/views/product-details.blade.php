@@ -29,7 +29,7 @@
                             </p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">
-                                    <h6>Brand:</h6>
+                                    <h6>Vendor: {{ $product->vendor->name }}</h6>
                                 </li>
                                 <li class="list-inline-item">
                                     <p class="text-muted"><strong>{{ $product->brand }}</strong></p>

@@ -8,7 +8,23 @@
                 <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
             </div>
             <div>
-                <a class="btn-success btn-lg" style="text-decoration: none; " href="{{route("login")}}"> Login / Register </a>
+                @if(auth()->user())
+                    <span class="text-light"> Welcome {{auth()->user()->name}}</span>
+                    @if(auth()->user()->role->name == "admin")
+                        <a class="btn-warning btn-lg" style="text-decoration: none; margin: 10px"
+                           href="{{route("admin.home")}}">
+                            Admin Dashboard </a>
+                    @elseif(auth()->user()->role->name == "client" && auth()->user()->vendor_id !== null)
+                        <a class="btn-warning btn-lg" style="text-decoration: none; margin: 10px"
+                           href="{{route("admin.home")}}">
+                            Client Dashboard </a>
+                    @endif
+                    <a class="btn-success btn-lg" style="text-decoration: none; margin: 10px;" href="{{route("logout")}}">
+                        Logout </a>
+                @else
+                    <a class="btn-success btn-lg" style="text-decoration: none; " href="{{route("login")}}"> Login /
+                        Register </a>
+                @endif
             </div>
         </div>
     </div>

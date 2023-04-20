@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as AuthenticateClient;
+use JetBrains\PhpStorm\NoReturn;
 
 class Client extends AuthenticateClient
 {
@@ -33,5 +34,20 @@ class Client extends AuthenticateClient
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function hasPermissionTo($permissionName): bool
+    {
+        $permissions = $this->role->permissions()->where('name', $permissionName)->get();
+//        return $this->permissions()->where('name', $permissionName)->exists();
+        return !$permissions->isEmpty();
+    }
+
+    #[NoReturn] public function givePermissionTo($permissionName)
+    {
+        $permission = Permission::where('id', $permissionName)->firstOrFail();
+        $this->role->permissions()->syncWithoutDetaching($permission->id);
+    }
+
+
 
 }

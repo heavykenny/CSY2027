@@ -11,12 +11,12 @@ class VendorController extends Controller
     {
         $vendors = Vendor::all();
 
-        return view('vendors.index', compact('vendors'));
+        return view('vendor.index', compact('vendors'));
     }
 
     public function create()
     {
-        return view('vendors.create');
+        return view('vendor.create');
     }
 
     public function store(Request $request)
@@ -35,12 +35,7 @@ class VendorController extends Controller
 
     public function show(Vendor $vendor)
     {
-        return view('vendors.show', compact('vendor'));
-    }
-
-    public function edit(Vendor $vendor)
-    {
-        return view('vendors.edit', compact('vendor'));
+        return view('vendor.show', compact('vendor'));
     }
 
     public function update(Request $request, Vendor $vendor)
@@ -54,13 +49,13 @@ class VendorController extends Controller
 
         $vendor->update($validatedData);
 
-        return redirect()->route('vendors.show', $vendor);
+        return redirect()->route('vendor.show', $vendor);
     }
 
     public function destroy(Vendor $vendor)
     {
         $vendor->delete();
 
-        return redirect()->route('vendors.index');
+        return redirect()->route('vendor.index');
     }
 }

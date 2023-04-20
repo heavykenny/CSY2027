@@ -24,7 +24,8 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric|min:0',
             'image' => 'required|image|max:1024',
-            'sizes' => 'nullable'
+            'sizes' => 'nullable',
+            'vendor_id' => 'required|exists:vendors,id'
         ]);
 
         $imagePath = $request->file('image')->store('public/images');
@@ -69,6 +70,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:1024',
             'sizes' => 'nullable',
+            'vendor_id' => 'required|exists:vendors,id'
         ]);
 
         if ($request->hasFile('image')) {

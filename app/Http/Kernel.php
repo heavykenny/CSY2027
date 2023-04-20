@@ -9,6 +9,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\ValidateSignature;
+use App\Http\Middleware\AdminVendorAuthenticate;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
@@ -76,6 +77,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareAliases = [
         'auth' => Authenticate::class,
+        'admin-vendor' => AdminVendorAuthenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'auth.session' => AuthenticateSession::class,
         'cache.headers' => SetCacheHeaders::class,

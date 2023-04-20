@@ -17,6 +17,7 @@
 
         <!-- partial -->
         @yield('content')
+
         <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->

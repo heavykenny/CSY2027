@@ -9,9 +9,10 @@ class PermissionsTableSeeder extends Seeder
 {
     public function run()
     {
-        Permission::create(['name' => 'create']);
-        Permission::create(['name' => 'read']);
-        Permission::create(['name' => 'update']);
-        Permission::create(['name' => 'delete']);
+        // Define permissions for product CRUD
+        Permission::create(['name' => 'view products']);
+        Permission::create(['name' => 'create products']);
+        Permission::create(['name' => 'edit products']);
+        Permission::create(['name' => 'delete products']);
     }
 }

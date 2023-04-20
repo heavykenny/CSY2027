@@ -4,7 +4,9 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,23 +21,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 Route::get('/products/load-more', [HomeController::class, 'loadMore'])->name('products.loadMore');
 Route::get('/products/{product}', [HomeController::class, 'details'])->name('products.details');
-
 Route::get('/about', function () {
     return view('about');
 })->name('about');
-
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
-
-
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+Route::get('/login', [ClientController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [ClientController::class, 'login']);
+Route::post('/logout', [ClientController::class, 'logout'])->name('logout');
+Route::get('/logout', [ClientController::class, 'logout'])->name('logout');
+Route::get('/register', [ClientController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [ClientController::class, 'register']);
 
 
-Route::prefix('admin')->group(function () {
+// Admin Routes
+Route::prefix('admin')->middleware(['auth', 'admin-vendor'])->group(function () {
     Route::get('', function () {
         return view('admin.home');
     })->name('admin.home');
@@ -44,31 +50,26 @@ Route::prefix('admin')->group(function () {
         return view('admin.home');
     })->name('admin.home');
 
-    Route::get('blank', function () {
-        return view('admin.blank');
-    })->name('admin.blank');
-});
-
-
-Route::get('/login', [ClientController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [ClientController::class, 'login']);
-Route::post('/logout', [ClientController::class, 'logout'])->name('logout');
-
-Route::get('/register', [ClientController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [ClientController::class, 'register']);
-
-Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/client', [ClientController::class, 'showClientProfile'])->name('client.profile');
 
-
     // Vendor Routes
-    Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
-    Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
-    Route::post('/vendors', [VendorController::class, 'store'])->name('vendors.store');
-    Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
-    Route::get('/vendors/{vendor}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
-    Route::put('/vendors/{vendor}', [VendorController::class, 'update'])->name('vendors.update');
-    Route::delete('/vendors/{vendor}', [VendorController::class, 'destroy'])->name('vendors.destroy');
+//    Route::get('/vendor/{id}/assign-clients', [VendorController::class, 'showAssignClientsForm'])->name('vendor.assignClientsForm');
+    Route::post('/vendor/assign-clients', [VendorController::class, 'assignClients'])->name('vendor.assignClients');
+
+    Route::get('/vendor', [VendorController::class, 'index'])->name('vendor.index');
+    Route::get('/vendor/create', [VendorController::class, 'create'])->name('vendor.create');
+    Route::post('/vendor', [VendorController::class, 'store'])->name('vendor.store');
+    Route::get('/vendor/{vendor}', [VendorController::class, 'show'])->name('vendor.show');
+    Route::delete('/vendor/{vendor}', [VendorController::class, 'destroy'])->name('vendor.destroy');
+    Route::put('/vendor/{vendor}', [VendorController::class, 'update'])->name('vendor.update');
+
+
+    Route::get('/client', [ClientController::class, 'index'])->name('client.index');
+    Route::get('/client/create', [ClientController::class, 'create'])->name('client.create');
+    Route::post('/client', [ClientController::class, 'store'])->name('client.store');
+    Route::get('/client/{client}', [ClientController::class, 'show'])->name('client.show');
+    Route::delete('/client/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
+    Route::put('/client/{client}', [ClientController::class, 'update'])->name('client.update');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
@@ -95,6 +96,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::put('/order-items/{orderItem}', [OrderItemController::class, 'update'])->name('order_items.update');
     Route::delete('/order-items/{orderItem}', [OrderItemController::class, 'destroy'])->name('order_items.destroy');
 
+    //
+    Route::get('/permissions', [PermissionController::class, "index"])->name('permission.index');
+    Route::post('/permissions', [PermissionController::class, "store"])->name('permission.store');
 });
 
 

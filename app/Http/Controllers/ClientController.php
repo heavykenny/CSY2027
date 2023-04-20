@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Role;
+use App\Models\Vendor;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -29,11 +30,6 @@ class ClientController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
-    }
-
-    public function showClientProfile(): Factory|View|Application
-    {
-        return view('client.client', ['user' => Auth::user()]);
     }
 
     public function showRegistrationForm(): Application|Factory|View|RedirectResponse
@@ -77,7 +73,7 @@ class ClientController extends Controller
             if ($user->role->name === "admin") {
                 return redirect()->route('admin.home');
             } elseif ($user->role->name === "client") {
-                return redirect()->route('client.profile');
+                return redirect()->route('admin.home');
             }
 
             return redirect()->intended('');
@@ -89,4 +85,57 @@ class ClientController extends Controller
     }
 
 
+    public function index()
+    {
+        $clients = Client::all();
+
+        return view('client.index', compact('clients'));
+    }
+
+    public function create()
+    {
+        return view('client.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+        ]);
+
+        $client = Client::create($validatedData);
+
+        return redirect()->route('vendors.show', $client);
+    }
+
+    public function show(Client $client)
+    {
+        $vendors = Vendor::all();
+        $roles = Role::all();
+        return view('client.show', compact('client', 'roles', 'vendors'));
+    }
+
+    public function update(Request $request, Client $client)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+        ]);
+
+        $client->update($validatedData);
+
+        return redirect()->route('client.show', $client);
+    }
+
+    public function destroy(Client $client)
+    {
+        $client->delete();
+
+        return redirect()->route('client.index');
+    }
 }
