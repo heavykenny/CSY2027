@@ -6,7 +6,7 @@
         <div class="content-wrapper">
             <div class="row">
                 <h1>All Clients</h1>
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                     <table class="table">
                         <thead>
                         <tr>
@@ -33,6 +33,10 @@
                         @endforeach
                         </tbody>
                     </table>
+
+                    <div class="form-group">
+                        <a href="{{ route('vendor.create') }}" class="btn btn-success">Add Client</a>
+                    </div>
                 </div>
 
 

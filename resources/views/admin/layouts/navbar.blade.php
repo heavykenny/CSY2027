@@ -10,7 +10,7 @@
                 <img src="{{ asset("images/logo.svg") }}" alt="logo"/>
             </a>
             <a class="navbar-brand brand-logo-mini" href="{{ route("admin.home") }}">
-                <img src="{{ asset("images/logo-mini.svg") }}" alt="logo"/>
+                <img src="{{ asset("images/logo.svg") }}" alt="logo"/>
             </a>
         </div>
     </div>
@@ -39,6 +39,8 @@
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">
+            <a href="{{ route("welcome") }}" class="btn btn-success btn-sm text-white mb-0 me-0" type="button">
+                View Homepage</a>
             <li class="nav-item">
                 <form class="search-form" action="#">
                     <i class="icon-search"></i>
@@ -103,7 +105,8 @@
                         <span class="badge badge-pill badge-danger">1</span></a>
                     <a class="dropdown-item"><i
                             class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i> Messages</a>
-                    <a href="{{ route("logout") }}" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign
+                    <a href="{{ route("logout") }}" class="dropdown-item"><i
+                            class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign
                         Out</a>
                 </div>
             </li>

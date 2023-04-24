@@ -3,27 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): Factory|View|Application
     {
-        $products = Product::paginate(8);
+        $products = Product::orderBy('created_at', 'desc')->paginate(8);
 
         return view('welcome', compact('products'));
     }
 
-    public function shop()
+    public function shop(): Factory|View|Application
     {
-        $products = Product::paginate(8);
+        $products = Product::orderBy('created_at', 'desc')->paginate(8);
 
         return view('shop', compact('products'));
     }
 
-    public function loadMore(Request $request): \Illuminate\Http\JsonResponse
+    public function loadMore(Request $request): JsonResponse
     {
-        $products = Product::paginate(4, ['*'], 'page', $request->page);
+        $products = Product::orderBy('created_at', 'desc')->paginate(4, ['*'], 'page', $request->page);
         $html = view('layouts.partial.product', compact('products'))->render();
 
         return response()->json([
@@ -32,15 +36,13 @@ class HomeController extends Controller
         ]);
     }
 
-    public function details(Product $product)
+    public function details(Product $product): Factory|View|Application
     {
         //eager loading
         $product->load(['vendor', 'reviews']);
 
         return view('product-details', compact('product'));
     }
-
-
 
 
 }

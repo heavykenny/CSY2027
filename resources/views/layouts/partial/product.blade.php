@@ -2,7 +2,7 @@
     <div class="col-12 col-md-3 mb-3">
         <div class="card h-100">
             <a href="{{ route('products.details', $product) }}">
-                <img src="{{ $product->image_url }}" class="card-img-top" alt="{{ $product->name }}">
+                <img src="{{ $product->image_url }}" class="card-img-top" style="max-height: 228px" alt="{{ $product->name }}">
             </a>
             <div class="card-body">
                 <ul class="list-unstyled d-flex justify-content-between">

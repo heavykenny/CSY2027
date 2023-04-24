@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------
  [Master Stylesheet]
 
-  Project:	Star Admin2 
+  Project:	Star Admin2
   Version:	1.2.1
 -------------------------------------------------------------------*/
 /*-------------------------------------------------------------------
@@ -28891,7 +28891,6 @@ div.tagsinput span.tag a {
 }
 
 .content-wrapper {
-  background: #F4F5F7;
   padding: 1.5rem 2.187rem 1.5rem 3.5rem;
   width: 100%;
   -webkit-flex-grow: 1;

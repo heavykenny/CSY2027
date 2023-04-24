@@ -14,7 +14,9 @@
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Price</th>
+                            <th>Price (£)</th>
+                            <th>Quantity</th>
+                            <th>Category</th>
                             <th>Image URL</th>
                             <th>Action</th>
                         </tr>
@@ -23,12 +25,14 @@
                         @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->description }}</td>
+                                <td>{{ str()->limit($product->description, 10) }}</td>
                                 <td>{{ $product->price }}</td>
+                                <td>{{ $product->quantity }}</td>
+                                <td>{{ $product->category->name }}</td>
                                 <td>{{ str()->limit($product->image_url, 10) }}</td>
                                 <td>
                                     <a href="{{ route('products.show', $product) }}" class="btn btn-primary">View</a>
-                                    <a href="{{ route('products.edit', $product) }}" class="btn btn-secondary">Edit</a>
+                                    <a href="{{ route('products.edit', $product) }}" class="btn btn-warning">Edit</a>
                                     <form action="{{ route('products.destroy', $product) }}" method="POST"
                                           style="display: inline-block;">
                                         @csrf
@@ -41,6 +45,7 @@
                         </tbody>
                     </table>
                     <a href="{{ route('products.create') }}" class="btn btn-success">Add Product</a>
+
 
                 </div>
             </div>

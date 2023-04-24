@@ -21,8 +21,7 @@
                             <div class="text-align-left align-self-center">
                                 <h1 class="h1 text-success"><b>eShop</b> eCommerce</h1>
                                 <h3 class="h2">Tiny and Perfect eCommerce Template</h3>
-                                <p>
-                                    eShop is an eCommerce HTML5 CSS template with latest version of Bootstrap 5 (beta
+                                <p>eShop is an eCommerce HTML5 CSS template with latest version of Bootstrap 5 (beta
                                     1).
                                     This template is 100% free provided by <a rel="sponsored" class="text-success"
                                                                               href="https://templatemo.com"

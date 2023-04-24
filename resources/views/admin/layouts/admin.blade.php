@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> @yield('title') - eshop Dashboard </title>
-    @include('admin.layouts.head');
+    @include('admin.layouts.head')
 </head>
 <body>
 <div class="container-scroller">

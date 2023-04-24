@@ -7,7 +7,7 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                     <h1>Create Product</h1>
                     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea name="description" id="description"
-                                      class="form-control">{{ old('description') }}</textarea>
+                                      class="my-textarea" rows="5">{{ old('description') }}</textarea>
                             @error('description')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -38,6 +38,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control"
+                                   value="{{ old('quantity') }}">
+                            @error('quantity')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="sizes">Sizes</label>
                             <input type="text" class="form-control @error('sizes') is-invalid @enderror"
                                    id="sizes" name="sizes"
@@ -46,6 +55,20 @@
                             @error('sizes')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category_id">Categories</label>
+                            @error('category_id')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                            <select name="category_id" id="category_id" class="form-control">
+                                <option value="{{ old('category_id') }}">-- Select a Category --</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <p class="text-muted">You can create a new <a href="{{ route('categories.create') }}">category here</a></p>
                         </div>
 
                         <div class="form-group">
@@ -71,7 +94,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Create Product</button>
-                            <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
+                            <a href="{{ route('products.index') }}" class="btn btn-warning">Cancel</a>
                         </div>
                     </form>
                 </div>

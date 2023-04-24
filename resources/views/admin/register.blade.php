@@ -21,7 +21,7 @@
                     </div>
                     <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                         <div class="brand-logo text-center">
-                            <img src="{{ asset("images/logo.svg") }}" alt="logo">
+                            <a href="{{ route('welcome') }}"><img src="{{ asset("images/logo.svg") }}" alt="logo"></a>
                         </div>
                         <h4 class="text-center">Hello! let's get started</h4>
                         <h6 class="fw-light text-center">Register to continue.</h6>

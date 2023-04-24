@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea name="description" id="description"
-                                      class="form-control">{{ old('description', $product->description) }}</textarea>
+                                      class="my-textarea">{{ old('description', $product->description) }}</textarea>
                             @error('description')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror

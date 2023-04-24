@@ -16,3 +16,11 @@
     font-weight: bold !important;
 }
 
+.my-textarea {
+    width: 100% !important;
+    height: 150px !important;
+    padding: 10px !important;
+    font-size: 16px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+}

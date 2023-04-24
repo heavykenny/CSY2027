@@ -12,5 +12,7 @@
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <link rel="stylesheet" href="{{ asset("css/vertical-layout-light/style.css")}}">
+<link rel="stylesheet" href="{{ asset("css/vertical-layout-light/style.css")}}">
+<link rel="stylesheet" href="{{ asset("css/custom.css")}}">
 <!-- endinject -->
 <link rel="shortcut icon" href="images/favicon.png"/>

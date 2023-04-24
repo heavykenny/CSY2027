@@ -10,7 +10,8 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class=" mb-3">
-                        <img class="card-img img-fluid" src="{{ $product->image_url }}" alt="Card image cap" id="product-detail">
+                        <img class="card-img img-fluid" src="{{ $product->image_url }}" alt="Card image cap"
+                             id="product-detail">
                     </div>
                 </div>
                 <!-- col end -->
@@ -64,27 +65,31 @@
                                             <li class="list-inline-item text-right">
                                                 Quantity
                                                 <input type="hidden" name="product-quantity" id="product-quantity"
-                                                       value="1">
+                                                       min="0" max="{{ $product->quantity }}"
+                                                       value="0">
                                             </li>
                                             <li class="list-inline-item">
                                                 <button type="button" class="btn btn-success" id="btn-minus">-</button>
                                             </li>
                                             <li class="list-inline-item"><span class="badge bg-secondary"
-                                                                               id="var-value">1</span></li>
+                                                                               id="var-value">0</span></li>
                                             <li class="list-inline-item">
                                                 <button type="button" class="btn btn-success" id="btn-plus">+</button>
+                                                <div class="btn btn-danger" style="margin-left: 30px; display: {{ $product->quantity > 0 ? 'none' : '' }}"
+                                                     id="btn-out-of-stock">Out Of Stock
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="row pb-3">
                                     <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">
+                                        <button type="submit" {{ $product->quantity > 0 ? '' : 'disabled' }} class="btn btn-success btn-lg" name="submit" value="buy">
                                             Buy
                                         </button>
                                     </div>
                                     <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit"
+                                        <button type="submit" {{ $product->quantity > 0 ? '' : 'disabled' }} class="btn btn-success btn-lg" name="submit"
                                                 value="addtocart">
                                             Add To Cart
                                         </button>
