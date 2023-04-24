@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -53,7 +54,6 @@ Route::prefix('admin')->middleware(['auth', 'admin-vendor'])->group(function () 
     Route::get('/client', [ClientController::class, 'showClientProfile'])->name('client.profile');
 
     // Vendor Routes
-//    Route::get('/vendor/{id}/assign-clients', [VendorController::class, 'showAssignClientsForm'])->name('vendor.assignClientsForm');
     Route::post('/vendor/assign-clients', [VendorController::class, 'assignClients'])->name('vendor.assignClients');
 
     Route::get('/vendor', [VendorController::class, 'index'])->name('vendor.index');
@@ -87,6 +87,15 @@ Route::prefix('admin')->middleware(['auth', 'admin-vendor'])->group(function () 
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     Route::get('/order-items', [OrderItemController::class, 'index'])->name('order_items.index');
     Route::get('/order-items/create', [OrderItemController::class, 'create'])->name('order_items.create');
