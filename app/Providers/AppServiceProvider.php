@@ -20,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->share('categories', Category::all()->take(5));
+//        view()->share('categories', Category::all()->take(5));
     }
 }
