@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Vendor;
 use Illuminate\Database\Seeder;
@@ -11,6 +12,11 @@ class VendorSeeder extends Seeder
 {
     public function run()
     {
+        $category = Category::create([
+            'name' => 'Fitness',
+            'description' => 'Fitness equipment and accessories',
+        ]);
+
         $vendors = [
             [
                 'name' => 'Fitness Emporium',
@@ -23,14 +29,18 @@ class VendorSeeder extends Seeder
                         'description' => 'Get your cardio in with our state-of-the-art treadmill.',
                         'price' => 1499.99,
                         'image_url' => 'https://via.placeholder.com/400x400',
-                        'sizes' => ['S', 'M', 'L']
+                        'sizes' => ['S', 'M', 'L'],
+                        'category_id' => $category->id,
+                        'quantity' => 10,
                     ],
                     [
                         'name' => 'Weights Set',
                         'description' => 'Build strength and muscle with our complete weights set.',
                         'price' => 699.99,
                         'image_url' => 'https://via.placeholder.com/400x400',
-                        'sizes' => ['One Size']
+                        'sizes' => ['One Size'],
+                        'category_id' => $category->id,
+                        'quantity' => 5,
                     ],
                 ],
             ],
@@ -45,14 +55,18 @@ class VendorSeeder extends Seeder
                         'description' => 'Practice your poses with our durable yoga mat.',
                         'price' => 79.99,
                         'image_url' => 'https://via.placeholder.com/400x400',
-                        'sizes' => ['S', 'L']
+                        'sizes' => ['S', 'L'],
+                        'category_id' => $category->id,
+                        'quantity' => 9,
                     ],
                     [
                         'name' => 'Yoga Blocks',
                         'description' => 'Support your practice with our high-quality yoga blocks.',
                         'price' => 39.99,
                         'image_url' => 'https://via.placeholder.com/400x400',
-                        'sizes' => ['One Size']
+                        'sizes' => ['One Size'],
+                        'category_id' => $category->id,
+                        'quantity' => 4,
                     ],
                 ],
             ],
@@ -76,6 +90,8 @@ class VendorSeeder extends Seeder
                     'price' => $productData['price'],
                     'image_url' => $productData['image_url'],
                     'sizes' => $productData['sizes'],
+                    'category_id' => $productData['category_id'],
+                    'quantity' => $productData['quantity'],
                 ]);
             }
         }
