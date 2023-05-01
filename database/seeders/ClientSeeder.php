@@ -16,7 +16,7 @@ class ClientSeeder extends Seeder
         Client::create([
             "name" => "Sample Super-Admin",
             "email" => "superadmin@eshopsales.co.uk",
-            "password" => bcrypt("superadmin"),
+            "password" => bcrypt("superadmin12345"),
             "role_id" => 1,
         ]);
 
@@ -24,7 +24,7 @@ class ClientSeeder extends Seeder
         Client::create([
             "name" => "Sample Client",
             "email" => "client@eshopsales.co.uk",
-            "password" => bcrypt("client"),
+            "password" => bcrypt("client12345"),
             "role_id" => 2,
             "vendor_id" => 1,
         ]);

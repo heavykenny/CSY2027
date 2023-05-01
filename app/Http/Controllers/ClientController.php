@@ -65,6 +65,11 @@ class ClientController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
@@ -75,8 +80,6 @@ class ClientController extends Controller
             } elseif ($user->role->name === "client") {
                 return redirect()->route('admin.home');
             }
-
-            return redirect()->intended('');
         }
 
         return back()->withErrors([

@@ -14,7 +14,7 @@ class AdminVendorAuthenticate
 
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->vedor_id != null || Auth::user()->role->name == "admin") {
+        if (Auth::check() && Auth::user()->vendor_id != null || Auth::user()->role->name == "admin") {
             return $next($request);
         }
 
