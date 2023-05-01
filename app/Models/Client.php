@@ -13,7 +13,7 @@ class Client extends AuthenticateClient
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role_id'
+        'name', 'email', 'password', 'role_id', 'vendor_id'
     ];
 
     protected $hidden = [
@@ -38,7 +38,6 @@ class Client extends AuthenticateClient
     public function hasPermissionTo($permissionName): bool
     {
         $permissions = $this->role->permissions()->where('name', $permissionName)->get();
-//        return $this->permissions()->where('name', $permissionName)->exists();
         return !$permissions->isEmpty();
     }
 
