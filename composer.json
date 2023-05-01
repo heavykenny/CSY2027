@@ -34,9 +34,11 @@
         }
     },
     "scripts": {
+        "post-install-cmd": [
+            "@php artisan migrate --seed"
+        ],
         "post-autoload-dump": [
             "@php artisan migrate",
-            "@php artisan db:seed",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
@@ -65,5 +67,6 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "platform-check": false
 }

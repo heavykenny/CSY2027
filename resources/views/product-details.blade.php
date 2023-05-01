@@ -42,6 +42,9 @@
                             <h6>Description:</h6>
                             <p>{{ $product->description }}</p>
 
+                            <h6>Items in Stock:</h6>
+                            <p>{{ $product->quantity }} left</p>
+
 
                             <form action="" method="POST">
                                 @csrf
