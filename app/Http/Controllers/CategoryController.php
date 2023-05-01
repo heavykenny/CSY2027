@@ -43,7 +43,7 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');;
     }
 
     public function store(Request $request): RedirectResponse
@@ -55,7 +55,7 @@ class CategoryController extends Controller
 
         Category::create($validatedData);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
     public function create():Factory|View|Application
@@ -67,6 +67,6 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 }

@@ -35,7 +35,7 @@ class ClientController extends Controller
     public function showRegistrationForm(): Application|Factory|View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('welcome');
+            return redirect()->route('welcome')->with('success', 'You are already logged in.');
         }
 
         return view('admin.register');
@@ -58,7 +58,7 @@ class ClientController extends Controller
 
         Auth::login($client);
 
-        return redirect()->route('welcome');
+        return redirect()->route('welcome')->with('success', 'Registration successful.');
     }
 
     public function login(Request $request): RedirectResponse
@@ -76,9 +76,9 @@ class ClientController extends Controller
             $user = Auth::user();
 
             if ($user->role->name === "admin") {
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.home')->with('success', 'Login successful as Admin.');
             } elseif ($user->role->name === "client") {
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.home')->with('success', 'Login successful as Client.');
             }
         }
 
@@ -97,21 +97,30 @@ class ClientController extends Controller
 
     public function create()
     {
-        return view('client.create');
+        $roles = Role::all();
+        $vendors = Vendor::all();
+        return view('client.create', compact('roles', 'vendors'));
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'required|string',
-            'address' => 'required|string',
+            'password' => 'required|string|min:8',
+            'role_id' => 'nullable|integer|exists:roles,id',
+            'vendor_id' => 'nullable|integer|exists:vendors,id',
         ]);
 
-        $client = Client::create($validatedData);
+        $client = new Client();
+        $client->name = $request->input('name');
+        $client->email = $request->input('email');
+        $client->password = Hash::make($request->input('password'));
+        $client->role_id = $request->input('role_id') ?? Role::where(["name" => "client"])->first()->id;
+        $client->vendor_id = $request->input('vendor_id');
+        $client->save();
 
-        return redirect()->route('vendors.show', $client);
+        return redirect()->route('vendor.index')->with('success', 'Client created successfully.');
     }
 
     public function show(Client $client)
@@ -123,22 +132,31 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'required|string',
-            'address' => 'required|string',
+            'password' => 'nullable|string|min:8',
+            'role_id' => 'nullable|integer|exists:roles,id',
+            'vendor_id' => 'nullable|integer|exists:vendors,id',
         ]);
+
+        $validatedData = [
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password') ? Hash::make($request->input('password')) : $client->password,
+            'role_id' => $request->input('role_id') ?? Role::where(["name" => "client"])->first()->id,
+            'vendor_id' => $request->input('vendor_id'),
+        ];
 
         $client->update($validatedData);
 
-        return redirect()->route('client.show', $client);
+        return redirect()->route('client.show', $client)->with('success', 'Client updated successfully.');
     }
 
     public function destroy(Client $client)
     {
         $client->delete();
 
-        return redirect()->route('client.index');
+        return redirect()->route('client.index')->with('success', 'Client deleted successfully.');
     }
 }

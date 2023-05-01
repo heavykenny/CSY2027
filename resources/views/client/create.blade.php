@@ -1,26 +1,31 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Edit Client')
+@section('title', 'Create Client')
 
 @section('content')
 
     <div class="content-wrapper">
         <div class="row">
             <div class="col-sm-12">
-                <h1>{{ $client->name }}'s Information</h1>
-                <p>Email: {{ $client->email }}</p>
+                <h1>Create Client</h1>
                 <hr>
 
-                <form method="POST" action="{{ route('client.update', $client->id) }}">
+                <form method="POST" action="{{ route('client.store') }}">
                     @csrf
-                    @method('PUT')
                     <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" name="name" value="{{ $client->name }}" required>
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
+                        @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
+
                     <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" name="email" value="{{ $client->email }}" required>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}">
+                        @error('email')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -39,6 +44,9 @@
                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endforeach
                         </select>
+                        @error('role_id')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
 
@@ -50,9 +58,15 @@
                                 <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
                             @endforeach
                         </select>
+
+                        @error('vendor_id')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save</button>
+
+
+                    <button type="submit" class="btn btn-primary">Create Client</button>
                     <button type="button" class="btn btn-warning"
                             onclick="window.location='{{ route('vendor.index') }}'">Cancel
                     </button>

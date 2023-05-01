@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h1 class="h2">{{ $product->name }}</h1>
-                            <p class="h3 py-2">${{ $product->price }}</p>
+                            <p class="h3 py-2">£ {{ $product->price }}</p>
                             <p class="py-2">
                                 @foreach(range(1, 5) as $i)
                                     @if($product->avgRating >= $i)

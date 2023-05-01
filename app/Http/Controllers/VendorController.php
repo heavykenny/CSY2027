@@ -30,7 +30,7 @@ class VendorController extends Controller
 
         $vendor = Vendor::create($validatedData);
 
-        return redirect()->route('vendors.show', $vendor);
+        return redirect()->route('vendors.show', $vendor)->with('success', 'Vendor created successfully.');
     }
 
     public function show(Vendor $vendor)
@@ -49,13 +49,13 @@ class VendorController extends Controller
 
         $vendor->update($validatedData);
 
-        return redirect()->route('vendor.show', $vendor);
+        return redirect()->route('vendor.show', $vendor)->with('success', 'Vendor updated successfully.');
     }
 
     public function destroy(Vendor $vendor)
     {
         $vendor->delete();
 
-        return redirect()->route('vendor.index');
+        return redirect()->route('vendor.index')->with('success', 'Vendor deleted successfully.');
     }
 }

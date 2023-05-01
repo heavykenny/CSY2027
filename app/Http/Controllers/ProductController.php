@@ -35,12 +35,15 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        return view('admin.product-edit', compact('product'));
+        $vendors = Vendor::all();
+        $categories = Category::all();
+
+        return view('admin.product-edit', compact('product', 'vendors', 'categories'));
     }
 
     public function update(Request $request, Product $product)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
             'price' => 'required|numeric|min:0',
@@ -58,16 +61,16 @@ class ProductController extends Controller
             $product->image_url = $imageUrl;
         }
 
-        $product->name = $validatedData['name'];
-        $product->description = $validatedData['description'];
-        $product->price = $validatedData['price'];
+        $product->name = $request['name'];
+        $product->description = $request['description'];
+        $product->price = $request['price'];
         $product->vendor_id = $request->vendor_id ?? Auth::user()->vendor_id;
         $product->category_id = $request->category_id;
         $product->quantity = $request->quantity;
-        $product->sizes = explode(',', $validatedData['sizes'] ?? '');
+        $product->sizes = explode(',', $request['sizes'] ?? '');
         $product->save();
 
-        return redirect()->route('admin.product-show', $product);
+        return redirect()->route('products.show', $product)->with('success', 'Product updated successfully!');
     }
 
     public function store(Request $request): RedirectResponse
@@ -104,6 +107,6 @@ class ProductController extends Controller
         Storage::delete($product->image_url);
         $product->delete();
 
-        return redirect()->route('admin.product-index');
+        return redirect()->route('admin.product-index')->with('success', 'Product deleted successfully!');
     }
 }

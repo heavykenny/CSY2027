@@ -34,7 +34,8 @@
                 <h3 class="welcome-sub-text">Your administration dashboard </h3>
 
                 @if(auth()->user()->vendor)
-                    <h3 class="welcome-sub-text">Vendor: {{ auth()->user()->vendor->name }}</h3>
+                    <h3 style="margin-bottom: 10px; " class="welcome-sub-text text-black">You belong to
+                        Vendor: {{ auth()->user()->vendor->name }}</h3>
                 @endif
             </li>
         </ul>

@@ -15,14 +15,17 @@
 
         @include('admin.layouts.sidebar')
 
-        <!-- partial -->
-        @yield('content')
+        <div class="main-panel">
+            @include('layouts.partial.errors')
+            <!-- partial -->
+            @yield('content')
 
-        <!-- main-panel ends -->
+            @include('admin.layouts.inner-footer')
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
+    <!-- container-scroller -->
 
 @include('admin.layouts.footer')
 </body>
