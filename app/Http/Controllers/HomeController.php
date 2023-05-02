@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -22,7 +23,9 @@ class HomeController extends Controller
     {
         $products = Product::orderBy('created_at', 'desc')->paginate(8);
 
-        return view('shop', compact('products'));
+        $categories = Category::all();
+
+        return view('shop', compact('products', 'categories'));
     }
 
     public function loadMore(Request $request): JsonResponse

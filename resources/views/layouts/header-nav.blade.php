@@ -42,15 +42,22 @@
                    data-bs-target="#templatemo_search">
                     <i class="fa fa-fw fa-search text-dark mr-2"></i>
                 </a>
-                <a class="nav-icon position-relative text-decoration-none" href="#">
+                <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.get') }}">
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+
+                    @php
+                        $cartCount = 0;
+                        if (session()->has('cartCount')) {
+                            $cartCount = session()->get('cartCount');
+                        }
+                    @endphp
                     <span
-                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{ $cartCount }}</span>
                 </a>
-                <a class="nav-icon position-relative text-decoration-none" href="#">
+                <a class="nav-icon position-relative text-decoration-none" href="{{ route("profile.index") }}">
                     <i class="fa fa-fw fa-user text-dark mr-3"></i>
                     <span
-                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
                 </a>
             </div>
         </div>

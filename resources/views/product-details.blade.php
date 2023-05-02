@@ -57,8 +57,10 @@
                                             </li>
                                             @foreach($product->sizes as $size)
                                                 <li class="list-inline-item">
-                                                    <button type="button" class="btn btn-success btn-size"
-                                                            data-size="{{ $size }}">{{ $size }}</button>
+                                                    <button id="product-size-options" type="button"
+                                                            class="btn btn-success btn-size"
+                                                            data-size="{{ $size }}"
+                                                            onclick="updateHiddenInput('{{ $size }}')">{{ $size }}</button>
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -78,23 +80,36 @@
                                                                                id="var-value">0</span></li>
                                             <li class="list-inline-item">
                                                 <button type="button" class="btn btn-success" id="btn-plus">+</button>
-                                                <div class="btn btn-danger" style="margin-left: 30px; display: {{ $product->quantity > 0 ? 'none' : '' }}"
+                                                <div class="btn btn-danger"
+                                                     style="margin-left: 30px; display: {{ $product->quantity > 0 ? 'none' : '' }}"
                                                      id="btn-out-of-stock">Out Of Stock
                                                 </div>
                                             </li>
+
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="row pb-3">
+                                    @csrf
                                     <div class="col d-grid">
-                                        <button type="submit" {{ $product->quantity > 0 ? '' : 'disabled' }} class="btn btn-success btn-lg" name="submit" value="buy">
-                                            Buy
+                                        <button type="button" class="btn btn-warning btn-lg"
+                                                id="wishlist">
+                                            Add to wishlist
                                         </button>
                                     </div>
+
                                     <div class="col d-grid">
-                                        <button type="submit" {{ $product->quantity > 0 ? '' : 'disabled' }} class="btn btn-success btn-lg" name="submit"
-                                                value="addtocart">
+                                        <button id="addToCart" type="button"
+                                                {{ $product->quantity > 0 ? '' : 'disabled' }} class="btn btn-info btn-lg">
                                             Add To Cart
+                                        </button>
+                                    </div>
+
+                                    <div class="col d-grid">
+                                        <button id="buyNow" type="button"
+                                                {{ $product->quantity > 0 ? '' : 'disabled' }} class="btn btn-success btn-lg"
+                                                name="submit">
+                                            Buy Now
                                         </button>
                                     </div>
                                 </div>
@@ -106,5 +121,113 @@
             </div>
         </div>
     </section>
+@endsection
 
+@section('scripts')
+    <script type="text/javascript">
+
+        window.onload = function () {
+            document.getElementById("product-quantity").value("1");
+        };
+
+        function updateHiddenInput(s) {
+            $('#product-size').val(s);
+        }
+
+        $(document).ready(function () {
+
+            $('#wishlist').click(function () {
+                let product_id = {{ $product->id }};
+                let client_id = {{ Auth::user()->id ?? "0" }};
+                let _token = $('input[name="_token"]').val();
+
+                if (client_id == 0) {
+                    showAlert('error', 'Please login to add to wishlist');
+                } else {
+                    $.ajax({
+                        url: "{{ route('wishlist.add') }}",
+                        type: "POST",
+                        data: {
+                            product_id: product_id,
+                            client_id: client_id,
+                            _token: _token
+                        },
+                        success: function (response) {
+                            if (response) {
+                                showAlert('success', response.message);
+                            }
+                        },
+                        error: function (response) {
+                            showAlert('error', response.responseJSON.message);
+                        }
+                    });
+                }
+            });
+
+            $('#addToCart').click(function () {
+                let product_id = {{ $product->id }};
+                let client_id = {{ Auth::user()->id ?? "0" }};
+                let quantity = $('#product-quantity').val();
+                let size = $('#product-size').val();
+                let _token = $('input[name="_token"]').val();
+
+                if (client_id == 0) {
+                    showAlert('error', 'Please login to add product to wishlist');
+                } else {
+
+                    $.ajax({
+                        url: "{{ route('cart.add') }}",
+                        type: "POST",
+                        data: {
+                            product_id: product_id,
+                            client_id: client_id,
+                            quantity: quantity,
+                            size: size,
+                            _token: _token
+                        },
+                        success: function (response) {
+                            if (response) {
+                                showAlert('success', response.message);
+                            }
+                        },
+                        error: function (response) {
+                            showAlert('error', response.responseJSON.message);
+                        }
+                    });
+                }
+            });
+
+            $('#buyNow').click(function () {
+                let product_id = {{ $product->id }};
+                let client_id = {{ Auth::user()->id ?? "0" }};
+                let quantity = $('#product-quantity').val();
+                let size = $('#product-size').val();
+                let _token = $('input[name="_token"]').val();
+
+                if (client_id == 0) {
+                    showAlert('error', 'Please login to add product to wishlist');
+                } else {
+                    $.ajax({
+                        url: "{{ route('cart.add') }}",
+                        type: "POST",
+                        data: {
+                            product_id: product_id,
+                            client_id: client_id,
+                            quantity: quantity,
+                            size: size,
+                            _token: _token
+                        },
+                        success: function (response) {
+                            if (response) {
+                                window.location.href = "{{ route('cart.get') }}";
+                            }
+                        },
+                        error: function (response) {
+                            showAlert('error', response.responseJSON.message);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

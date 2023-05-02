@@ -28,9 +28,9 @@
 <!-- Start Footer -->
 @include("layouts.footer")
 <!-- End Footer -->
-
 <!-- Start Script -->
 @include("layouts.script")
+@yield("scripts")
 <!-- End Script -->
 </body>
 

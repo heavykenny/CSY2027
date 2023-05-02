@@ -14,3 +14,11 @@
         </form>
     </div>
 </div>
+
+<div class="alert alert-success col-6 m-auto text-center" style="display: none" id="success-alert">
+    <span id="messagePopupS"></span>
+</div>
+
+<div class="alert alert-danger col-6 m-auto text-center" style="display: none" id="error-alert">
+    <span id="messagePopupE">s</span>
+</div>

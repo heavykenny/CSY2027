@@ -6,25 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderItem extends Model
+class Cart extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'client_id',
         'product_id',
         'quantity',
         'size',
     ];
 
-    public function order(): BelongsTo
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
-
 }

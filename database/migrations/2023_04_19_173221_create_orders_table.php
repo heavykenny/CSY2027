@@ -11,13 +11,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('vendor_id');
             $table->string('status');
+            $table->string('order_number');
+            $table->string('payment_status');
             $table->decimal('total_amount', 10, 2);
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
         });
     }
 

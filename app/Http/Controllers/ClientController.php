@@ -130,7 +130,7 @@ class ClientController extends Controller
         return view('client.show', compact('client', 'roles', 'vendors'));
     }
 
-    public function update(Request $request, Client $client)
+    public function update(Request $request, Client $client): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string',
@@ -158,5 +158,11 @@ class ClientController extends Controller
         $client->delete();
 
         return redirect()->route('client.index')->with('success', 'Client deleted successfully.');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('user_profile', compact('user'));
     }
 }
