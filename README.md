@@ -1,66 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# eShop - Technical ReadMe
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+eShop is a web application developed using the Laravel framework, MySQL database, Docker for containerization, Valet for
+macOS development environment, and XAMPP for Windows development environment. This readme provides an overview of the
+technical aspects of eShop and guides through the setup and usage of the application.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This is a group project for the CSY2027 module at the University of Northampton and developed by the following team members:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Kehinde Olawuwo
+- Prudence-Success Harry
+- Isaac Chuwkwudi-Samuel
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technologies Used
 
-## Learning Laravel
+- Laravel: A powerful PHP framework used for developing the eShop web application
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- MySQL: MySQL is used as the database engine for eShop.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Docker: Docker simplifies the deployment process and ensures consistency across different environments.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Valet (for macOS): Valet provides a lightweight and user-friendly way to set up a local development server for Laravel
+  applications.
 
-## Laravel Sponsors
+- XAMPP (for Windows): XAMPP provides an easy-to-install and pre-configured environment for running PHP-based
+  applications on Windows.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+## Features
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+## Security tools used
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Burp Suite: a web application security testing tool used to identify vulnerabilities in the eShop
+  application.
+- Wireshark: a network protocol analyzer used to monitor the network traffic between the eShop application and the
+  database.
 
-## Code of Conduct
+## Setup Instructions
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Prerequisites
 
-## Security Vulnerabilities
+- PHP: Make sure you have PHP installed on your system. You can download it from the official PHP website.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Composer: Install Composer by following the instructions on the
+  official Composer website.
 
-## License
+### Installation
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Clone the eShop repository to your local machine:
+   ```bash
+   git clone https://github.com/heavykenny/CSY2027.git
+   ```
+
+2. Install the project dependencies using Composer:
+   ```bash
+   cd CSY2027
+   composer install
+   ```
+
+3. Configure the Database:
+    - Create a new MySQL database for eShop.
+    - Rename the `.env.example` file to `.env` and update the database configuration details in the `.env` file.
+
+4. Generate the Application Key:
+   ```bash
+   php artisan key:generate
+   ```
+
+5. Run the Database Migrations:
+   ```bash
+   php artisan migrate
+   ```
+
+6. Start the Development Server:
+    - For macOS (using Valet):
+      ```bash
+      valet link
+      valet secure
+      ```
+    - For Windows (using XAMPP):
+      Copy the project files to the `htdocs` directory in your XAMPP installation and start the Apache server.
+
+## Docker Setup Instructions
+
+## Tables
+
+The eShop application utilizes several tables to store data, including:
+
+- Clients: Stores information about the clients (users) of the application.
+- Roles: Manages different user roles and their permissions.
+- Permissions: Defines various permissions that can be assigned to roles.
+- Role_Permissions: Establishes the relationship between roles and permissions.
+- Vendor: Contains details about the vendors associated with the products.
+- Orders: Stores information about the orders placed by clients.
+- Products: Manages the product catalog, including details like name, description, price, and image URL.
+- Order_Items: Tracks the items included in each order.
+- Wishlist: Stores the wishlist items for each user.
+- Payments: Manages payment information related to orders.
+- Payment_Methods: Contains the available payment methods.
+- Order_History - Transaction: Tracks the history of order transactions, including status and timestamps.
+
+## Usage
+
+Once you have completed the installation process, you can access the eShop web application by visiting the assigned domain or localhost in your web browser. The application provides a user-friendly interface for browsing products, adding them to the cart, and completing the checkout process.
+
+As an administrator, you can log in to the admin dashboard to manage products, orders, users, and other aspects of the application.
+
+Enjoy using eShop and happy coding!

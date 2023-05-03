@@ -1,5 +1,5 @@
 <link rel="apple-touch-icon" href="{{ asset("img/apple-icon.png") }}">
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset("img//img/favicon.ico") }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset("img/favicon.ico") }}">
 
 <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
 <link rel="stylesheet" href="{{ asset("css/templatemo.css") }}">
