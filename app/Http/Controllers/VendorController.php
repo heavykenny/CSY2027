@@ -3,23 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vendor;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
+/**
+ * This class handles all the vendor related functions
+ *
+ */
 class VendorController extends Controller
 {
-    public function index()
+    /**
+     * This function gets all the vendors and displays them in the vendor index page
+     *
+     * @return Factory|View|Application
+     */
+    public function index(): Application|View|Factory
     {
         $vendors = Vendor::all();
 
         return view('vendor.index', compact('vendors'));
     }
 
-    public function create()
-    {
-        return view('vendor.create');
-    }
-
-    public function store(Request $request)
+    /**
+     *  This function creates a new vendor and redirects to the vendor show page
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
@@ -33,12 +47,35 @@ class VendorController extends Controller
         return redirect()->route('vendors.show', $vendor)->with('success', 'Vendor created successfully.');
     }
 
-    public function show(Vendor $vendor)
+    /**
+     *  this shows the vendor create page
+     *
+     * @return Factory|View|Application
+     */
+    public function create(): Application|View|Factory
+    {
+        return view('vendor.create');
+    }
+
+    /**
+     * this function gets a vendor and displays it in the vendor show page
+     *
+     * @param Vendor $vendor
+     * @return Factory|View|Application
+     */
+    public function show(Vendor $vendor): Application|View|Factory
     {
         return view('vendor.show', compact('vendor'));
     }
 
-    public function update(Request $request, Vendor $vendor)
+    /**
+     * this updates a vendor and redirects to the vendor show page
+     *
+     * @param Request $request
+     * @param Vendor $vendor
+     * @return RedirectResponse
+     */
+    public function update(Request $request, Vendor $vendor): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
@@ -52,6 +89,12 @@ class VendorController extends Controller
         return redirect()->route('vendor.show', $vendor)->with('success', 'Vendor updated successfully.');
     }
 
+    /**
+     * this function deletes a vendor and redirects to the vendor index page
+     *
+     * @param Vendor $vendor
+     * @return RedirectResponse
+     */
     public function destroy(Vendor $vendor)
     {
         $vendor->delete();
