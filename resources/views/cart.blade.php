@@ -8,13 +8,12 @@
         <div class="row">
 
             <div class="container">
-                <h1>Cart</h1>
+                <h1>Your Cart</h1>
 
                 <div class="row">
                     <div class="col-md-8">
                         <div class="container">
-
-                            @foreach($carts as $cart)
+                            @forelse($carts as $cart)
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="row no-gutters">
@@ -69,9 +68,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                No items in cart
+                            @endforelse
                         </div>
-
                     </div>
 
                     <div class="col-md-4">
@@ -111,34 +111,44 @@
 @section('scripts')
 
     <script>
-        function removeCart(param) {
-            $.ajax({
-                url: '/cart/' + param,
-                type: 'DELETE',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                },
-                success: function (response) {
-                    showAlert('success', response.message)
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000);
-                }
-            });
-        }
-
         $(document).ready(function () {
+            // This function is called when the user clicks the remove button
+            // It sends a DELETE request to the server to remove the cart attached to the user
+            // It then reloads the page to update the cart
+            function removeCart(param) {
+                $.ajax({
+                    url: '/cart/' + param,
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    success: function (response) {
+                        showAlert('success', response.message)
+
+                        // reload the page after 3 seconds
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    }
+                });
+            }
+
+            // This function is called when the user clicks the plus or minus button
+            // It sends a PUT request to the server to update the cart quantity
+            // It then reloads the page to update the cart
             function updateCartSummary() {
                 let subtotal = 0;
 
+                // Loop through each product and calculate the subtotal
                 $('.productPrice').each(function () {
                     let price = $(this).text().replace("Price: £", "");
                     let quantity = parseFloat($(this).closest('.card-body').find('.productQuantity').text());
 
+                    // Calculate the subtotal
                     subtotal += price * quantity;
                 });
 
+                // Calculate the tax and total
                 let taxRate = 0.1; // 10% tax rate
                 let tax = subtotal * taxRate;
                 let total = subtotal + tax;
@@ -148,38 +158,50 @@
                 $('#total').text('£ ' + total.toFixed(2));
             }
 
+            // This function is called when the user clicks the plus or minus button
+            // It sends a PUT request to the server to update the cart quantity
+            // It then reloads the page to update the cart
             $('.card .list-inline .btn.btn-success').on('click', function () {
                 let input = $(this).closest('.list-inline').find('.badge.bg-secondary');
                 let value = parseInt(input.text());
+
+                // Check if the user is trying to add more than the quantity available
                 if ($(this).attr('id') === 'product-btn-minus' && value > 0) {
+                    // Update the cart quantity
                     input.text(value - 1);
                 } else if ($(this).attr('id') === 'product-btn-plus') {
 
+                    // Check if the user is trying to add more than the quantity available
                     let max = "{{ $cart->product->quantity }}";
                     if (value >= max) {
                         showAlert('You cannot add more than ' + max + ' items to the cart.', 'error');
                         return;
                     }
+                    // Update the cart quantity
                     input.text(value + 1);
                 }
 
+                // Update the cart quantity
                 let quantity = input.text();
                 let cart_id = $(this).closest('.card-body').find('.cartId').val();
-
                 updateCart(cart_id, quantity);
                 updateCartSummary();
             });
 
+            // This function is called when the user clicks the remove button
             $('.card .btn.btn-danger.btn-lg').on('click', function () {
                 $(this).closest('.card.mb-3').remove();
                 updateCartSummary();
             });
 
+            // Update the cart summary when the page loads
             updateCartSummary();
 
 
+            // This function is called when the user clicks the plus or minus button
+            // It sends a PUT request to the server to update the cart quantity
+            // It then reloads the page to update the cart
             function updateCart(cart_id, quantity) {
-
                 $.ajax({
                     url: "{{ route('cart.update') }}",
                     type: "POST",
@@ -197,7 +219,6 @@
                         showAlert('error', response.responseJSON.message);
                     }
                 });
-
             }
         });
     </script>

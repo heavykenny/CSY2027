@@ -7,11 +7,11 @@
                 <ul class="list-unstyled text-light footer-link-list">
                     <li>
                         <i class="fas fa-map-marker-alt fa-fw"></i>
-                        123 Consectetur at ligula 10660
+                        34, Block B, Canary Wharf, <br>London, England, E14 5DY
                     </li>
                     <li>
                         <i class="fa fa-phone fa-fw"></i>
-                        <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                        <a class="text-decoration-none" href="tel:07366994971">07366994971</a>
                     </li>
                     <li>
                         <i class="fa fa-envelope fa-fw"></i>

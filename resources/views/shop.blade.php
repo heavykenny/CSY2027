@@ -10,9 +10,7 @@
             <div class="col-lg-3">
                 <h1 class="h2 pb-4">Categories</h1>
                 <ul class="list-unstyled templatemo-accordion">
-
                     @foreach($categories as $category)
-
                         <li class="pb-3">
                             <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
                                 {{ $category->name }}
@@ -20,8 +18,6 @@
                             </a>
                         </li>
                     @endforeach
-
-
                 </ul>
             </div>
 
@@ -83,7 +79,6 @@
                     @endforelse
                 </div>
                 <div div="row">
-
                     <ul class="pagination pagination-lg justify-content-end">
                         <ul class="pagination">
                             <li class="page-item {{ $products->previousPageUrl() ? '' : 'disabled' }}">

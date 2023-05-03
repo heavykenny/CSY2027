@@ -8,8 +8,7 @@
     <div class="col-md-6 m-auto text-center">
         <h1 class="h1">Contact Us</h1>
         <p>
-            Proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet.
+            Please fill out the form below and we will get back to you as soon as possible.
         </p>
     </div>
 </div>
@@ -17,7 +16,7 @@
 <!-- Start Contact -->
 <div class="container py-5">
     <div class="row py-5">
-        <form class="col-md-9 m-auto" method="post" role="form">
+        <form class="col-md-9 m-auto">
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
                     <label for="inputname">Name</label>

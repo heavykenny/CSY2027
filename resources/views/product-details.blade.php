@@ -126,24 +126,31 @@
 @section('scripts')
     <script type="text/javascript">
 
+        // Update the product quantity and set value to 1 when the page loads
         window.onload = function () {
             document.getElementById("product-quantity").value("1");
         };
 
+        // Update the product quantity
         function updateHiddenInput(s) {
             $('#product-size').val(s);
         }
 
         $(document).ready(function () {
-
+            // Update the product quantity
+            // this method helps to add product to the wishlist
             $('#wishlist').click(function () {
                 let product_id = {{ $product->id }};
                 let client_id = {{ Auth::user()->id ?? "0" }};
                 let _token = $('input[name="_token"]').val();
 
+                // validate if the user is logged in
                 if (client_id == 0) {
                     showAlert('error', 'Please login to add to wishlist');
                 } else {
+                    // add product to wishlist
+                    // send ajax request to the server
+                    // to add product to the wishlist
                     $.ajax({
                         url: "{{ route('wishlist.add') }}",
                         type: "POST",
@@ -164,6 +171,8 @@
                 }
             });
 
+            // this method helps to add product to the cart
+            // send ajax request to the server to add product to the cart
             $('#addToCart').click(function () {
                 let product_id = {{ $product->id }};
                 let client_id = {{ Auth::user()->id ?? "0" }};
@@ -171,10 +180,14 @@
                 let size = $('#product-size').val();
                 let _token = $('input[name="_token"]').val();
 
+                // validate if the user is logged in
                 if (client_id == 0) {
                     showAlert('error', 'Please login to add product to cart');
                 } else {
 
+                    // add product to cart
+                    // send ajax request to the server
+                    // to add product to the cart
                     $.ajax({
                         url: "{{ route('cart.add') }}",
                         type: "POST",
@@ -197,6 +210,9 @@
                 }
             });
 
+            // this method helps to buy product
+            // send ajax request to the server to buy product
+            // and redirect to the cart page for user to complete the transaction
             $('#buyNow').click(function () {
                 let product_id = {{ $product->id }};
                 let client_id = {{ Auth::user()->id ?? "0" }};
@@ -204,9 +220,12 @@
                 let size = $('#product-size').val();
                 let _token = $('input[name="_token"]').val();
 
+                // validate if the user is logged in
                 if (client_id == 0) {
                     showAlert('error', 'Please login to before you buy');
                 } else {
+                    // user buy product
+                    // send ajax request to the server
                     $.ajax({
                         url: "{{ route('cart.add') }}",
                         type: "POST",
