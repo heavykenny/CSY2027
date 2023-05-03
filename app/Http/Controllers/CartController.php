@@ -174,7 +174,7 @@ class CartController extends Controller
             'client_id' => $client_id,
             'total_amount' => $total_amount,
             'status' => 'pending',
-            'order_number' => 'ORD-ESH-' . rand(0000, 9999),
+            'order_number' => 'ORD-ESH-' . rand(0000, 9999). '-' . rand(0000, 9999),
             'payment_status' => 'pending',
         ]);
 
