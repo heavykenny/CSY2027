@@ -15,7 +15,7 @@
                             @endif
                         @endforeach
                     </li>
-                    <li class="text-muted text-right">£{{ $product->price }}</li>
+                    <li class="text-muted text-right">£{{ $convertMoney($product->price) }}</li>
                 </ul>
                 <a href="{{ route('products.details', $product) }}"
                    class="h2 text-decoration-none text-dark">{{ $product->name }}</a>

@@ -172,7 +172,7 @@
                 let _token = $('input[name="_token"]').val();
 
                 if (client_id == 0) {
-                    showAlert('error', 'Please login to add product to wishlist');
+                    showAlert('error', 'Please login to add product to cart');
                 } else {
 
                     $.ajax({
@@ -205,7 +205,7 @@
                 let _token = $('input[name="_token"]').val();
 
                 if (client_id == 0) {
-                    showAlert('error', 'Please login to add product to wishlist');
+                    showAlert('error', 'Please login to before you buy');
                 } else {
                     $.ajax({
                         url: "{{ route('cart.add') }}",

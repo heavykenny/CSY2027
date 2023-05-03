@@ -117,6 +117,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/wishlist', [WishlistController::class, "getWishlist"])->name('wishlist.get');
     Route::post('/wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
     Route::delete('/wishlist/{id}', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+    Route::post('/wishlist/move-to-cart', [WishlistController::class, 'moveToCart'])->name('wishlist.move');
 
     Route::get('/cart', [CartController::class, "getAllCarts"])->name('cart.get');
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -128,6 +129,13 @@ Route::group(['middleware' => ['auth']], function () {
 
     // profile
     Route::get('/profile', [ClientController::class, 'profile'])->name('profile.index');
+    Route::put('/profile', [ClientController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/password', [ClientController::class, 'updatePassword'])->name('profile.password');
+
+
+    // orders
+    Route::get('/orders', [OrderController::class, 'userOrderIndex'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'userOrderShow'])->name('orders.show');
 });
 
 

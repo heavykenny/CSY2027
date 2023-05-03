@@ -14,7 +14,6 @@
 @include("layouts.top-nav")
 <!-- Close Top Nav -->
 
-
 <!-- Header -->
 @include("layouts.header-nav")
 <!-- Close Header -->

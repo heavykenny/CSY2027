@@ -78,7 +78,7 @@ class ClientController extends Controller
             if ($user->role->name === "admin") {
                 return redirect()->route('admin.home')->with('success', 'Login successful as Admin.');
             } elseif ($user->role->name === "client") {
-                return redirect()->route('admin.home')->with('success', 'Login successful as Client.');
+                return redirect()->route('welcome')->with('success', 'Login successful as Client.');
             }
         }
 
@@ -130,6 +130,43 @@ class ClientController extends Controller
         return view('client.show', compact('client', 'roles', 'vendors'));
     }
 
+    public function destroy(Client $client)
+    {
+        $client->delete();
+
+        return redirect()->route('client.index')->with('success', 'Client deleted successfully.');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('user_profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+        $request->validate([
+            'name' => 'required|string',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'postcode' => 'nullable|string',
+            'country' => 'nullable|string',
+        ]);
+
+        $validatedData = [
+            'name' => $request->input('name'),
+            'address' => $request->input('address'),
+            'phone' => $request->input('phone'),
+            'postcode' => $request->input('postcode'),
+            'country' => $request->input('country'),
+        ];
+
+        $user->update($validatedData);
+
+        return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+    }
+
     public function update(Request $request, Client $client): RedirectResponse
     {
         $request->validate([
@@ -153,16 +190,31 @@ class ClientController extends Controller
         return redirect()->route('client.show', $client)->with('success', 'Client updated successfully.');
     }
 
-    public function destroy(Client $client)
-    {
-        $client->delete();
-
-        return redirect()->route('client.index')->with('success', 'Client deleted successfully.');
-    }
-
-    public function profile()
+    public function updatePassword(Request $request): RedirectResponse
     {
         $user = Auth::user();
-        return view('user_profile', compact('user'));
+        $request->validate([
+            'currentPassword' => 'required|string|min:8',
+            'newPassword' => 'required|string|min:8',
+            'confirmPassword' => 'required|string|min:8',
+        ]);
+
+        if (!Hash::check($request->input('currentPassword'), $user->password)) {
+            return redirect()->route('profile.index')->with('error', 'Current password is incorrect.');
+        }
+
+        if ($request->input('newPassword') !== $request->input('confirmPassword')) {
+            return redirect()->route('profile.index')->with('error', 'New password and confirm password do not match.');
+        }
+
+        // validate current password is not same with new password
+        if (Hash::check($request->input('newPassword'), $user->password)) {
+            return redirect()->route('profile.index')->with('error', 'New password cannot be same as current password.');
+        }
+
+        $user->password = Hash::make($request->input('newPassword'));
+        $user->save();
+
+        return redirect()->route('profile.index')->with('success', 'Password updated successfully.');
     }
 }

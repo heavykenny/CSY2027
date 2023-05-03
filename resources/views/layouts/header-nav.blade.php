@@ -47,17 +47,31 @@
 
                     @php
                         $cartCount = 0;
+                        $wishlistCount = 0;
                         if (session()->has('cartCount')) {
                             $cartCount = session()->get('cartCount');
                         }
+
+                        if (session()->has('wishlistCount')) {
+                            $wishlistCount = session()->get('wishlistCount');
+                        }
                     @endphp
-                    <span
-                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{ $cartCount }}</span>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{ $cartCount }}</span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="{{ route("profile.index") }}">
                     <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                    <span
-                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
+                </a>
+
+                <a class="nav-icon position-relative text-decoration-none" href="{{ route("orders.index") }}">
+                    <i class="fa fa-fw fa-shopping-bag text-dark mr-3"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
+                </a>
+
+                <a class="nav-icon position-relative text-decoration-none" href="{{ route("wishlist.get") }}">
+                    <i class="fa fa-fw fa-heart text-dark mr-3"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{ $wishlistCount }}</span>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
                 </a>
             </div>
         </div>

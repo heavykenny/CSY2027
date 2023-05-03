@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Category;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-//        view()->share('categories', Category::all()->take(5));
+        view()->share('convertMoney', function ($money) {
+            return number_format((int)$money, 2);
+        });
     }
 }

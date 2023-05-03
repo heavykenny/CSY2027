@@ -60,9 +60,8 @@
 
                                                             <button onclick="removeCart({{ $cart->id }})"
                                                                     style="float: right" type="button"
-                                                                    class="btn btn-danger btn-lg">Remove
+                                                                    class="btn btn-danger btn-lg btn-block">Remove
                                                             </button>
-
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -71,7 +70,6 @@
                                     </div>
                                 </div>
                             @endforeach
-
                         </div>
 
                     </div>

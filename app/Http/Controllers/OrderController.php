@@ -7,16 +7,21 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function userOrderIndex(Request $request)
     {
-        $orders = Order::all();
+        // order by created_at desc to show the latest order first
+        // paginate the orders to show 10 orders per page
+        // load the client and vendor relationship
+        // return the view with the orders
 
+        $orders = Order::where('client_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
         return view('orders.index', compact('orders'));
     }
 
-    public function create()
+    public function userOrderShow(Order $order)
     {
-        return view('orders.create');
+        $order->load('client', 'vendor', 'items.product');
+        return view('orders.order_summary', compact('order'));
     }
 
     public function store(Request $request)
@@ -31,6 +36,11 @@ class OrderController extends Controller
         $order = Order::create($validatedData);
 
         return redirect()->route('orders.show', $order);
+    }
+
+    public function create()
+    {
+        return view('orders.create');
     }
 
     public function show(Order $order)

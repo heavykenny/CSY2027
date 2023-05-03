@@ -37,7 +37,7 @@
                                     </tbody>
                                 </table>
                                 <div class="text-right">
-                                    <h5>Total: £ {{ $order->total_amount }}</h5>
+                                    <h5>Total: £ {{ $convertMoney($order->total_amount) }}</h5>
                                 </div>
                             </div>
                         </div>

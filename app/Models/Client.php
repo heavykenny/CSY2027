@@ -13,7 +13,8 @@ class Client extends AuthenticateClient
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'vendor_id'
+        'name', 'email', 'password', 'role_id', 'vendor_id',
+        'phone', 'address', 'country', 'postcode'
     ];
 
     protected $hidden = [

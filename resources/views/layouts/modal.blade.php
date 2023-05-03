@@ -22,3 +22,6 @@
 <div class="alert alert-danger col-6 m-auto text-center" style="display: none" id="error-alert">
     <span id="messagePopupE">s</span>
 </div>
+<div class="text-center">
+    @include('layouts.partial.errors')
+</div>

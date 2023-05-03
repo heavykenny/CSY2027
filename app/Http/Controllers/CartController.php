@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -21,7 +23,7 @@ class CartController extends Controller
         session()->put('cartCount', $carts->count());
 
         if ($carts->count() == 0) {
-            return redirect()->back()->with('error', 'Your cart is empty');
+            return redirect()->route("shop")->with('error', 'Your cart is empty');
         }
 
         return view('cart', compact('carts'));
@@ -83,9 +85,17 @@ class CartController extends Controller
         ]);
     }
 
-    public function checkout(Request $request): View|Application
+    public function checkout(Request $request): Factory|View|RedirectResponse|Application
     {
         $client_id = auth()->user()->id;
+
+        // validate user has address, postal code, phone number, etc. before checkout
+        // if not, redirect to profile page with error message
+        // if yes, proceed to checkout
+
+        if (!auth()->user()->address || !auth()->user()->postcode || !auth()->user()->phone) {
+            return redirect()->route('profile.index')->with('error', 'Please update your profile with your address before checkout');
+        }
 
         $carts = Cart::where('client_id', $client_id)->get();
 

@@ -9,11 +9,3 @@
         {{ session('error') }}
     </div>
 @endif
-
-{{--@if ($errors->any())--}}
-{{--    <div class="text-center alert alert-danger">--}}
-{{--        @foreach ($errors->all() as $error)--}}
-{{--            <span>{{ $error }} <br></span>--}}
-{{--        @endforeach--}}
-{{--    </div>--}}
-{{--@endif--}}

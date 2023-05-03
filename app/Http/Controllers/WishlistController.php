@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Wishlist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,18 +29,75 @@ class WishlistController extends Controller
             'product_id' => $request->product_id,
         ]);
 
+        $wishlistCount = Wishlist::where('client_id', $request->client_id)->count();
+
+        session()->put('wishlistCount', $wishlistCount);
 
         return response()->json([
             'message' => 'Product added to wishlist successfully'
         ]);
     }
 
-    public function getWishlist(Request $request): JsonResponse
+    public function getWishlist(Request $request)
     {
-        $wishlist = Wishlist::where('user_id', $request->user_id)->get();
+        $client_id = auth()->user()->id;
+
+        $wishlists = Wishlist::where('client_id', $client_id)->get();
+        session()->put('wishlistCount', $wishlists->count());
+
+        if ($wishlists->count() == 0) {
+            return redirect()->back()->with('error', 'Your wishlist is empty');
+        }
+
+        return view('wishlist', compact('wishlists'));
+    }
+
+
+    public function moveToCart(Request $request)
+    {
+        $request->validate([
+            'wishlist_id' => 'required',
+        ]);
+
+        $wishlist = Wishlist::with('product')->find($request->wishlist_id);
+
+        if (!$wishlist) {
+            return response()->json([
+                'message' => 'Wishlist item not found',
+            ], 404);
+        }
+
+        $cart = Cart::with('product')->where('client_id', $wishlist->client_id)
+            ->where('product_id', $wishlist->product_id)->first();
+
+
+        if ($cart != null) {
+            $wishlist->delete();
+            return response()->json([
+                'message' => 'Product already in cart',
+            ], 409);
+        }
+
+        if ($wishlist->product->quantity < 1) {
+            return response()->json([
+                'message' => 'Product is out of stock, please try again later',
+            ], 409);
+        }
+
+
+        Cart::create([
+            'client_id' => $wishlist->client_id,
+            'product_id' => $wishlist->product_id,
+            'quantity' => 1,
+            'size' => $wishlist->product->sizes[0],
+        ]);
+
+        $wishlist->delete();
+        session()->put('wishlistCount', Wishlist::where('client_id', $wishlist->client_id)->count());
+        session()->put('cartCount', Cart::where('client_id', $wishlist->client_id)->count());
 
         return response()->json([
-            'wishlist' => $wishlist,
+            'message' => 'Product moved to cart successfully',
         ]);
     }
 

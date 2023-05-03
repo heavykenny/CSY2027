@@ -88,7 +88,7 @@
                             <div class="form-group m-3">
                                 <label for="paymentAmount">Payment Amount</label>
                                 <input type="text" class="m-2 p-3 form-control" id="paymentAmount"
-                                       value="£ {{ $order->total_amount ?? 0 }}" readonly>
+                                       value="£ {{ $convertMoney($order->total_amount) ?? 0 }}" readonly>
                             </div>
 
                             <a href="{{ route('checkout.confirmation', $order->id) }}" class="btn btn-primary">Make Payment</a>
