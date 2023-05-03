@@ -119,6 +119,47 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="row mt-4">
+                @if(in_array($product->id, $orderItems))
+                    <div class="col-md-6">
+                        <h3>Ratings</h3>
+                        <div class="my-3">
+                            <label for="rating">Your Rating:</label>
+                            <select class="form-control" id="rating">
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                        </div>
+
+                        <h3>Reviews</h3>
+                        <div class="my-3">
+                            <label for="review">Your Review:</label>
+                            <textarea class="form-control" id="review" rows="3"></textarea>
+                        </div>
+                        <button class="btn-block btn btn-primary" id="reviewBtn">Submit Review</button>
+                    </div>
+                @endif
+                <div class="col-md-6">
+                    <h3>All Reviews</h3>
+                    <ul class="list-group" id="reviewList">
+                        @forelse($product->reviews as $review)
+                            <li class="list-group-item">
+                                <strong>Rating:</strong> {{ $review->rating }} stars<br>
+                                <strong>Review:</strong> {{ $review->review }} !
+                            </li>
+                        @empty
+                            <p>No reviews yet.</p>
+                        @endforelse
+
+                    </ul>
+                </div>
+
+            </div>
         </div>
     </section>
 @endsection
@@ -126,17 +167,16 @@
 @section('scripts')
     <script type="text/javascript">
 
-        // Update the product quantity and set value to 1 when the page loads
-        window.onload = function () {
-            document.getElementById("product-quantity").value("1");
-        };
-
         // Update the product quantity
         function updateHiddenInput(s) {
             $('#product-size').val(s);
         }
 
         $(document).ready(function () {
+
+            // Update the product quantity and set value to 1 when the page loads
+            $("#product-quantity").val("1");
+
             // Update the product quantity
             // this method helps to add product to the wishlist
             $('#wishlist').click(function () {
@@ -239,6 +279,45 @@
                         success: function (response) {
                             if (response) {
                                 window.location.href = "{{ route('cart.get') }}";
+                            }
+                        },
+                        error: function (response) {
+                            showAlert('error', response.responseJSON.message);
+                        }
+                    });
+                }
+            });
+
+            // add reviews to the product
+            $('#reviewBtn').click(function () {
+                let product_id = {{ $product->id }};
+                let client_id = {{ Auth::user()->id ?? "0" }};
+                let review = $('#review').val();
+                let rating = $('#rating').val();
+
+                let _token = $('input[name="_token"]').val();
+
+                // validate if the user is logged in
+                if (client_id == 0) {
+                    showAlert('error', 'Please login to add review');
+                } else {
+                    // add review to the product
+                    // send ajax request to the server
+                    $.ajax({
+                        url: "{{ route('reviews.store') }}",
+                        type: "POST",
+                        data: {
+                            product_id: product_id,
+                            client_id: client_id,
+                            review: review,
+                            rating: rating,
+                            _token: _token
+                        },
+                        success: function (response) {
+                            if (response) {
+                                showAlert('success', response.message);
+                                //reload the page
+                                location.reload();
                             }
                         },
                         error: function (response) {

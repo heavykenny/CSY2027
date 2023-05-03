@@ -75,7 +75,23 @@ class HomeController extends Controller
         // load the product with its vendor and reviews via eager loading
         $product->load(['vendor', 'reviews']);
 
-        return view('product-details', compact('product'));
+
+        // get all the product_id of the order items through the order the user has bought
+        // check if user is logged in
+        if (auth()->check()) {
+            $orderItems = auth()->user()
+                ->orders()->where('status', '!=', 'pending')
+                ->with('items')->get()
+                ->pluck('items')
+                ->flatten()
+                ->pluck('product_id')
+                ->toArray();
+        } else {
+            $orderItems = [];
+        }
+
+
+        return view('product-details', compact('product', 'orderItems'));
     }
 
 

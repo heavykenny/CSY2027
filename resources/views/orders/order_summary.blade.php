@@ -50,7 +50,7 @@
                     @foreach($order->items as $item)
                         <tr>
                             <td>{{ $item->product->vendor->name }}</td>
-                            <td>{{ $item->product->name }}</td>
+                            <td><a href="{{ route("products.details", $item->product) }}">{{ $item->product->name }}</a></td>
                             <td>£ {{ $convertMoney($item->product->price) }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>£ {{ $convertMoney($item->product->price * $item->quantity) }}</td>

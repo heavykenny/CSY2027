@@ -143,4 +143,8 @@ Route::group(['middleware' => ['auth']], function () {
     // user orders routes
     Route::get('/orders', [OrderController::class, 'userOrderIndex'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'userOrderShow'])->name('orders.show');
+
+
+    // ratings and reviews
+    Route::post('/reviews', [ReviewController::class, 'storeReviews'])->name('reviews.store');
 });

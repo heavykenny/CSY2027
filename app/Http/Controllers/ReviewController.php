@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Review;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -17,18 +18,26 @@ class ReviewController extends Controller
     }
 
     /**
+     * This function is used by ajax request to store reviews.
      * Store a newly created resource in storage.
      */
-    public function store(Product $product, Request $request)
+    public function storeReviews(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
+            'client_id' => 'required|integer',
+            'product_id' => 'required|integer:exists:products,id',
             'rating' => 'required|integer|min:1|max:5',
             'review' => 'required|string|max:500',
         ]);
 
+        $product = Product::find($validatedData['product_id']);
+
         $product->reviews()->create($validatedData);
 
-        return redirect()->route('products.show', $product)->with('success', 'Review added successfully!');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Review added successfully',
+        ]);
     }
 
     /**

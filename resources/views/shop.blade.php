@@ -61,13 +61,13 @@
                                     </ul>
                                     <ul class="list-unstyled d-flex justify-content-center mb-1">
                                         <li>
-                                            @for ($i = 0; $i < 5; $i++)
-                                                @if ($i < $product->rating)
+                                            @foreach(range(1, 5) as $i)
+                                                @if($product->avgRating >= $i)
                                                     <i class="text-warning fa fa-star"></i>
                                                 @else
                                                     <i class="text-muted fa fa-star"></i>
                                                 @endif
-                                            @endfor
+                                            @endforeach
                                         </li>
                                     </ul>
                                     <p class="text-center mb-0">£ {{ $product->price }}</p>
