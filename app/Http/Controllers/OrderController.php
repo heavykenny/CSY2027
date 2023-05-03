@@ -18,6 +18,36 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+    public function adminOrderIndex()
+    {
+        // order by created_at desc to show the latest order first
+        // paginate the orders to show 10 orders per page
+        // load the client and vendor relationship
+        // return the view with the orders
+
+        $orders = Order::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.order-index', compact('orders'));
+    }
+
+    public function adminOrderShow(Order $order)
+    {
+        $order->load('client', 'vendor', 'items.product');
+        return view('admin.order-details', compact('order'));
+    }
+
+    public function adminOrderUpdate(Order $order, Request $request)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|string',
+        ]);
+
+
+        $order->update($validatedData);
+
+        return redirect()->route('admin.orders.show', $order)->with('success', 'Order status updated successfully');
+    }
+
     public function userOrderShow(Order $order)
     {
         $order->load('client', 'vendor', 'items.product');

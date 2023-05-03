@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
@@ -49,9 +50,7 @@ Route::prefix('admin')->middleware(['auth', 'admin-vendor'])->group(function () 
         return view('admin.home');
     })->name('admin.home');
 
-    Route::get('/home', function () {
-        return view('admin.home');
-    })->name('admin.home');
+    Route::get('/home', [DashboardController::class, 'index'])->name('admin.home');
 
     Route::get('/client', [ClientController::class, 'showClientProfile'])->name('client.profile');
 
@@ -73,12 +72,11 @@ Route::prefix('admin')->middleware(['auth', 'admin-vendor'])->group(function () 
     Route::delete('/client/{client}', [ClientController::class, 'destroy'])->name('client.destroy');
     Route::put('/client/{client}', [ClientController::class, 'update'])->name('client.update');
 
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::get('/orders', [OrderController::class, 'adminOrderIndex'])->name('admin.orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'adminOrderShow'])->name('admin.orders.show');
+    Route::put('/orders/{order}', [OrderController::class, 'adminOrderUpdate'])->name('admin.orders.update');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
