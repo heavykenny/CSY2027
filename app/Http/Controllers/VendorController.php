@@ -50,10 +50,14 @@ class VendorController extends Controller
     /**
      *  this shows the vendor create page
      *
-     * @return Factory|View|Application
+     * @return Factory|View|Application|RedirectResponse
      */
-    public function create(): Application|View|Factory
+    public function create(): Application|View|Factory|RedirectResponse
     {
+        if (auth()->user()->isVendor()) {
+            return redirect()->back()->with('error', 'You are not authorized to perform this action.');
+        }
+
         return view('vendor.create');
     }
 
@@ -95,7 +99,7 @@ class VendorController extends Controller
      * @param Vendor $vendor
      * @return RedirectResponse
      */
-    public function destroy(Vendor $vendor)
+    public function destroy(Vendor $vendor): RedirectResponse
     {
         $vendor->delete();
 

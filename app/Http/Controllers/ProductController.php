@@ -26,7 +26,14 @@ class ProductController extends Controller
      */
     public function index(): Application|View|Factory
     {
-        $products = Product::all();
+        // get all products from the database
+        // view all if user is admin
+        // view only the products of the vendor if user is vendor
+        $products = Product::orderBy('created_at', 'desc')->get();
+
+        if (auth()->user()->isVendor()) {
+            $products = $products->where('vendor_id', auth()->user()->vendor->id);
+        }
 
         return view('admin.product-index', compact('products'));
     }
