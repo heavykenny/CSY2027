@@ -122,7 +122,7 @@
 
 
             <div class="row mt-4">
-                @if(in_array($product->id, $orderItems))
+                @if(in_array($product->id, $orderItems) && $canReview)
                     <div class="col-md-6">
                         <h3>Ratings</h3>
                         <div class="my-3">

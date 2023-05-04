@@ -30,6 +30,8 @@ class ReviewController extends Controller
             'review' => 'required|string|max:500',
         ]);
 
+        $validatedData['client_id'] = auth()->user()->id;
+
         $product = Product::find($validatedData['product_id']);
 
         $product->reviews()->create($validatedData);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -78,9 +79,13 @@ class HomeController extends Controller
 
         // get all the product_id of the order items through the order the user has bought
         // check if user is logged in
+        $canReview = false;
         if (auth()->check()) {
-            $orderItems = auth()->user()
-                ->orders()->where('status', '!=', 'pending')
+            $client = Client::find(auth()->user()->id);
+
+            $canReview = $client->reviews()->where('product_id', $product->id)->count() == 0;
+
+            $orderItems = $client->where('status', '!=', 'pending')
                 ->with('items')->get()
                 ->pluck('items')
                 ->flatten()
@@ -91,7 +96,7 @@ class HomeController extends Controller
         }
 
 
-        return view('product-details', compact('product', 'orderItems'));
+        return view('product-details', compact('product', 'orderItems', 'canReview'));
     }
 
 

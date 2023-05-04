@@ -48,6 +48,8 @@ class Client extends AuthenticateClient
         $this->role->permissions()->syncWithoutDetaching($permission->id);
     }
 
-
-
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 }
