@@ -52,4 +52,10 @@ class Client extends AuthenticateClient
     {
         return $this->hasMany(Review::class);
     }
+
+    // is admin
+    public function isAdmin(): bool
+    {
+        return $this->role->name === 'admin';
+    }
 }

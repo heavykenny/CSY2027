@@ -66,7 +66,7 @@ class OrderController extends Controller
 
         // validate the user is the owner of the order
         // if not redirect back with an error message
-        if (auth()->user()->id !== $order->client_id && !auth()->user()->is_admin) {
+        if (auth()->user()->id !== $order->client_id && !auth()->user()->isAdmin()) {
             return redirect()->back()->with('error', 'You are not authorized to view this order');
         }
         return view('admin.order-details', compact('order'));
@@ -89,7 +89,7 @@ class OrderController extends Controller
 
         // validate the user is the owner of the order
         // if not redirect back with an error message
-        if (auth()->user()->id !== $order->client_id && !auth()->user()->is_admin) {
+        if (auth()->user()->id !== $order->client_id && !auth()->user()->isAdmin()) {
             return redirect()->back()->with('error', 'You are not authorized to update this order');
         }
 
@@ -124,14 +124,14 @@ class OrderController extends Controller
      * @param Order $order
      * @return Factory|View|Application
      */
-    public function userOrderShow(Order $order): Application|View|Factory
+    public function userOrderShow(Order $order): Application|View|Factory|RedirectResponse
     {
         // load the client, vendor and items relationship
         $order->load('client', 'vendor', 'items.product');
 
         // validate the user is the owner of the order
         // if not redirect back with an error message
-        if (auth()->user()->id !== $order->client_id && !auth()->user()->is_admin) {
+        if (auth()->user()->id !== $order->client_id && !auth()->user()->isAdmin()) {
             return redirect()->back()->with('error', 'You are not authorized to view this order');
         }
 
@@ -179,7 +179,7 @@ class OrderController extends Controller
 
         // validate the user is the owner of the order
         // if not redirect back with an error message
-        if (auth()->user()->id !== $order->client_id && !auth()->user()->is_admin) {
+        if (auth()->user()->id !== $order->client_id && !auth()->user()->isAdmin()) {
             return redirect()->back()->with('error', 'You are not authorized to view this order');
         }
 
@@ -196,7 +196,7 @@ class OrderController extends Controller
     {
         // validate the user is the owner of the order
         // if not redirect back with an error message
-        if (auth()->user()->id !== $order->client_id && !auth()->user()->is_admin) {
+        if (auth()->user()->id !== $order->client_id && !auth()->user()->isAdmin()) {
             return redirect()->back()->with('error', 'You are not authorized to update this order');
         }
 
@@ -213,7 +213,7 @@ class OrderController extends Controller
     {
         // validate the user is the owner of the order
         // if not redirect back with an error message
-        if (auth()->user()->id !== $order->client_id && !auth()->user()->is_admin) {
+        if (auth()->user()->id !== $order->client_id && !auth()->user()->isAdmin()) {
             return redirect()->back()->with('error', 'You are not authorized to delete this order');
         }
         $order->delete();
