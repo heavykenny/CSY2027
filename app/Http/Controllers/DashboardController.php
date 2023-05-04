@@ -9,6 +9,7 @@ use App\Models\Vendor;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 
 /**
  * This class handles all the dashboard related functions
@@ -22,8 +23,8 @@ class DashboardController extends Controller
     public function index(): View|Factory|Application
     {
         // if user is client, make some queries to get the data
-        if (auth()->user()->role->name === 'client') {
-            return $this->clientDashboard();
+        if (auth()->user()->isVendor()) {
+            return $this->vendorDashboard();
         }
 
         // get the latest 10 orders
@@ -33,29 +34,34 @@ class DashboardController extends Controller
         // return the view with the data
         $totalOrders = Order::count();
         $totalProducts = Product::count();
-        $totalClients = Client::count();
+
         $totalVendors = Vendor::count();
         $totalSales = Order::sum('total_amount');
 
-        return view('admin.home', compact('orders', 'totalOrders', 'totalProducts', 'totalClients', 'totalVendors', 'totalSales'));
+        return view('admin.home', compact('orders', 'totalOrders', 'totalProducts', 'totalVendors', 'totalSales'));
     }
 
     /**
      * @return View|Factory|Application
      */
-    private function clientDashboard(): View|Factory|Application
+    private function vendorDashboard(): View|Factory|Application
     {
         // get the latest 10 orders
-        $orders = Order::where('client_id', auth()->user()->id)->orderBy('created_at', 'desc')->take(10)->get();
-
-        // get total orders, total products, total clients, total vendors, total sales for client's vendor
-        // return the view with the data
-        $totalOrders = Order::where('client_id', auth()->user()->id)->count();
-        $totalProducts = Product::where('vendor_id', auth()->user()->vendor->id)->count();
-        $totalClients = Client::where('vendor_id', auth()->user()->vendor->id)->count();
         $totalVendors = Vendor::count();
-        $totalSales = Order::where('client_id', auth()->user()->id)->sum('total_amount');
 
-        return view('admin.home', compact('orders', 'totalOrders', 'totalProducts', 'totalClients', 'totalVendors', 'totalSales'));
+        $orders = Order::with('client')->select('orders.*', 'order_items.*', 'products.*', 'clients.*')
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->join('clients', 'orders.client_id', '=', 'clients.id')
+            ->where('products.vendor_id', auth()->user()->vendor->id)
+            ->get();
+
+        $totalProducts = Product::where('vendor_id', auth()->user()->vendor->id)->count();
+        $totalSales = $orders->sum('total_amount');
+        $totalOrders = $orders->count();
+
+        $orders = $orders->take(10);
+
+        return view('admin.home', compact('orders', 'totalOrders', 'totalProducts', 'totalVendors', 'totalSales'));
     }
 }
