@@ -85,7 +85,7 @@ class HomeController extends Controller
 
             $canReview = $client->reviews()->where('product_id', $product->id)->count() == 0;
 
-            $orderItems = $client->where('status', '!=', 'pending')
+            $orderItems = $client->orders()->where('status', '!=', 'pending')
                 ->with('items')->get()
                 ->pluck('items')
                 ->flatten()
