@@ -66,8 +66,8 @@ class Client extends AuthenticateClient
     }
 
     // is vendor and they own the product
-    public function isVendorAndOwnsProduct($vendorId): bool
+    public function isVendorAndOwnsProduct(Order $order): bool
     {
-        return $this->vendor->id === $vendorId;
+        return $this->isVendor() && in_array($this->vendor->id, $order->items->pluck('product.vendor_id')->flatten()->unique()->toArray());
     }
 }
