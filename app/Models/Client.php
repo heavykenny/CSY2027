@@ -58,4 +58,10 @@ class Client extends AuthenticateClient
     {
         return $this->role->name === 'admin';
     }
+
+    // is vendor and they own the product
+    public function isVendorAndOwnsProduct($vendorId): bool
+    {
+        return $this->vendor->id === $vendorId;
+    }
 }
