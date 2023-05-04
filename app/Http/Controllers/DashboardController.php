@@ -49,7 +49,7 @@ class DashboardController extends Controller
         // get the latest 10 orders
         $totalVendors = Vendor::count();
 
-        $orders = Order::with('client')->select('orders.*', 'order_items.*', 'products.*', 'clients.*')
+        $orders = Order::with('client')->select('orders.*', 'clients.*')
             ->join('order_items', 'orders.id', '=', 'order_items.order_id')
             ->join('products', 'order_items.product_id', '=', 'products.id')
             ->join('clients', 'orders.client_id', '=', 'clients.id')
