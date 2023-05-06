@@ -1,86 +1,63 @@
-version: '3'
+# docker-compose.yml
+
+version: "3.9"
+
 services:
-    eshop-localhost:
+    app:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.2
+            context: .
             dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.2/app
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        ports:
-            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
-        environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+        container_name: app
         volumes:
-            - '.:/var/www/html'
+            - ./:/var/www
         networks:
-            - sail
-            - fleet
-        depends_on:
-            - mysql
-            - redis
-            - mailpit
-        labels:
-            - traefik.http.routers.eshop-localhost.rule=Host(`eshop.localhost`)
-            - traefik.http.services.eshop-localhost.loadbalancer.server.port=80
+            - app-network
+
+    php:
+        image: php:8.1-fpm
+        container_name: php
+        volumes:
+            - ./:/var/www
+        networks:
+            - app-network
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - app-network
+
     mysql:
-        image: 'mysql/mysql-server:8.0'
-        ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
+        image: mysql:8.0
+        container_name: mysql
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
-        volumes:
-            - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
-        networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
-            retries: 3
-            timeout: 5s
-    redis:
-        image: 'redis:alpine'
+            MYSQL_DATABASE: your_database_name
+            MYSQL_USER: your_user
+            MYSQL_PASSWORD: your_password
+            MYSQL_ROOT_PASSWORD: your_root_password
         ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
+            - "3306:3306"
         volumes:
-            - 'sail-redis:/data'
+            - mysql-data:/var/lib/mysql
         networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - redis-cli
-                - ping
-            retries: 3
-            timeout: 5s
-    mailpit:
-        image: 'axllent/mailpit:latest'
-        ports:
-            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
-            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
-        networks:
-            - sail
-networks:
-    sail:
-        driver: bridge
-    fleet:
-        external: true
+            - app-network
+
+    ssl:
+        image: alpine
+        container_name: ssl
+        volumes:
+            - ./ssl:/ssl
+        entrypoint: /bin/sh -c "apk add openssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=US/ST=State/L=City/O=Organization/CN=realurl.test' -keyout /ssl/selfsigned.key -out /ssl/selfsigned.crt"
+
 volumes:
-    sail-mysql:
-        driver: local
-    sail-redis:
-        driver: local
+    mysql-data:
+
+networks:
+    app-network:
+        driver: bridge
