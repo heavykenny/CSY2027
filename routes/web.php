@@ -39,11 +39,11 @@ Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 
 // client registration and login routes
 Route::get('/login', [ClientController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [ClientController::class, 'login'])->middleware('throttle:5,1');;
+Route::post('/login', [ClientController::class, 'login'])->middleware('throttle:5,1');
+Route::post('/register', [ClientController::class, 'register'])->middleware('throttle:5,1');
 Route::post('/logout', [ClientController::class, 'logout'])->name('logout');
 Route::get('/logout', [ClientController::class, 'logout'])->name('logout');
 Route::get('/register', [ClientController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [ClientController::class, 'register'])->middleware('throttle:5,1');;
 
 // Admin Routes
 // these routes are authenticated and only admin and client can access them
